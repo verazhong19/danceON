@@ -14,6 +14,11 @@
     <!-- ACE -->
     <script src="ace/ace.js"></script>
     <script src="ace/ext-language_tools.js"></script>
+  
+    <!-- Blockly -->
+   <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+   <script src="javascript_compressed.js"></script>
+   <script src="msg/js/en.js"></script>
 
     <!-- ESPrima -->
     <script src="https://unpkg.com/esprima@~4.0/dist/esprima.js"></script>
@@ -315,6 +320,9 @@
         </div>
     </div>
 </section>
+
+<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
 <footer class="footer">
   <div class="container">
       <div class="columns">
@@ -336,7 +344,56 @@
       </div>
   </div>
 </footer>
+<script>
+    const toolbox = {
+      "kind": "flyoutToolbox",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "controls_if"
+        },
+        {
+          "kind" : "block",
+          "type" : "logic_compare"
+        },
+        {
+          "kind": "block",
+          "type": "controls_repeat_ext"
+        },
+        {
+          "kind": "block",
+          "type": "math_number",
+          "fields": {
+            "NUM": 123
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_arithmetic"
+        },
+        {
+          "kind": "block",
+          "type": "text"
+        },
+        {
+          "kind" : "block",
+          "type" : "text_print"
+        }
+      ]
+    };
 
+    var workspace = Blockly.inject('blocklyDiv',
+        {media: 'https://unpkg.com/blockly/media/',
+         toolbox: toolbox});
+    function updateCode(event){
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    // var codeHolder = document.getElementById('editor');
+    // codeHolder.innerHTML = '';  // Delete old code.
+    // codeHolder.appendChild(document.createTextNode(code));
+    editor.setValue(code);
+    }
+    workspace.addChangeListener(updateCode);
+  </script>
 <script src="topnav_handler.js"></script>
 <script src="lib/bulma-quickview.min.js"></script>
 
