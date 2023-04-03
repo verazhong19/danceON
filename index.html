@@ -22,13 +22,14 @@
 
     <!-- ESPrima -->
     <script src="https://unpkg.com/esprima@~4.0/dist/esprima.js"></script>
-
+    
     <!-- Rough -->
     <script src="https://unpkg.com/roughjs@latest/bundled/rough.js"></script>
 
     <!-- Style -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" type="text/css" href="style/mystyles.css">
+    <link rel="stylesheet" href="prism/prism.css">
     <!-- <link rel="stylesheet" type="text/css" href="../sass-dance/css/mystyles.css"> -->
 
     <!-- Favicon -->
@@ -36,10 +37,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <link rel="manifest" href="assets/favicon/site.webmanifest">
+  
 
 </head>
 <body>
-<nav style="box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);" class="navbar is-light is-fixed-top" role="navigation" aria-label="main navigation">
+<nav style="display: none; box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);" class="navbar is-light is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <li class="is-family-code navbar-item is-size-4 title_text">() => [<i><b>danceON</b></i>]</li>
         <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
@@ -48,7 +50,7 @@
             <span aria-hidden="true"></span>
         </a>
     </div>
-    <div class="navbar-menu" id="navMenu">
+    <div class="navbar-menu" id="navMenu" >
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
@@ -260,17 +262,60 @@
 <section class="section">
     <div class="container is-fluid">
         <div class="columns">
-            <div class="column">
-                <div id="editor" style="height:480px"></div>
+            <div class="column" >
+                <div style="width: 500px;
+max-height: 409px;
+overflow: scroll;">
+    <pre><code class="language-js">
+(pose) => [
+{
+        what: 'triangle',
+        when: true,
+        where: {
+            x1: pose.leftShoulder.x<input id="x1" type="text" style="z-index:99999;">,
+            y1: pose.leftShoulder.y<input id="y1" type="text" style="z-index:99999;">,
+            x2: pose.leftElbow.x<input id="x2" type="text" style="z-index:99999;">,
+            y2: pose.leftElbow.y<input id="y2" type="text" style="z-index:99999;">,
+            x3: pose.leftWrist.x<input id="x3" type="text" style="z-index:99999;" value="+100">,
+            y3: pose.leftEar.y<input id="y3" type="text" style="z-index:99999;" value="-100">
+        },
+        how: {
+            fill: <input id='fill' type="color" style="z-index:99999;"> </label>,
+            stroke: <input id="stroke" type="number" value="255">,
+            strokeWeight: <input id="weight" type="number" value="10">
+        }
+    },{
+        what: 'triangle',
+        when: true,
+        where: {
+            x1: pose.leftShoulder.x<input id="_x1" type="text" style="z-index:99999;">,
+            y1: pose.leftShoulder.y<input id="_y1" type="text" style="z-index:99999;">,
+            x2: pose.leftElbow.x<input id="_x2" type="text" style="z-index:99999;">,
+            y2: pose.leftElbow.y<input id="_y2" type="text" style="z-index:99999;">,
+            x3: pose.leftWrist.x<input id="_x3" type="text" style="z-index:99999;" value="-100">,
+            y3: pose.leftEar.y<input id="_y3" type="text" style="z-index:99999;" vlaue="-100">
+        },
+        how: {
+            fill: <input id='_fill' type="color" style="z-index:99999;"> ,
+            stroke: <input id="_stroke" type="number" value="255">,
+            strokeWeight: <input id="_weight" type="number" value="10">
+        }
+    },
+     
+];
+</code>
+</pre>
+</div>
+                <div id="editor" style="display:none; height:480px"></div>
                 <div id="editorControls" class="mb-2">
-                    <button id="revertButton" disabled class="button is-success is-light is-fullwidth">
+                    <button id="revertButton" style="display: none;" disabled class="button is-success is-light is-fullwidth">
                         <span class=icon>
                             <i class="fas fa-check"></i>
                         </span>
                         <span>Code is Live!</span>
                     </button>
                 </div>
-                <div id="codeProgress">
+                <div id="codeProgress" style="display: none">
                     <ul class="steps has-gaps is-horizontal">
                         <li id="startingStep" class="steps-segment is-active">
                             <span class="steps-marker is-hollow"></span>
@@ -304,7 +349,7 @@
                 </div>
             </div>
             <div class="column is-narrow">
-                <div style="">
+                <div>
                     <div id='p5Canvas'></div>
                     <div id="analyzingNotifier" class="notification is-warning is-hidden" style="padding:0rem 2.5rem 0rem 3rem; margin: 0px 0px 8px 0px;">
                         <button class="button is-warning is-small is-loading"></button>
@@ -320,10 +365,51 @@
         </div>
     </div>
 </section>
+<!-- <div style="width: 500px;
+max-height: 409px;
+overflow: scroll;">
+    <pre>
+        (pose) => [
+{
+        what: 'triangle',
+        when: true,
+        where: {
+            x1: pose.leftShoulder.x<input id="x1" type="text" style="z-index:99999;">,
+            y1: pose.leftShoulder.y<input id="y1" type="text" style="z-index:99999;">,
+            x2: pose.leftElbow.x<input id="x2" type="text" style="z-index:99999;">,
+            y2: pose.leftElbow.y<input id="y2" type="text" style="z-index:99999;">,
+            x3: pose.leftWrist.x<input id="x3" type="text" style="z-index:99999;" value="+100">,
+            y3: pose.leftEar.y<input id="y3" type="text" style="z-index:99999;" value="-100">
+        },
+        how: {
+            fill: <input id='fill' type="color" style="z-index:99999;"> </label>,
+            stroke: <input id="stroke" type="number" value="255">,
+            strokeWeight: <input id="weight" type="number" value="10">
+        }
+    },{
+        what: 'triangle',
+        when: true,
+        where: {
+            x1: pose.leftShoulder.x<input id="_x1" type="text" style="z-index:99999;">,
+            y1: pose.leftShoulder.y<input id="_y1" type="text" style="z-index:99999;">,
+            x2: pose.leftElbow.x<input id="_x2" type="text" style="z-index:99999;">,
+            y2: pose.leftElbow.y<input id="_y2" type="text" style="z-index:99999;">,
+            x3: pose.leftWrist.x<input id="_x3" type="text" style="z-index:99999;" value="-100">,
+            y3: pose.leftEar.y<input id="_y3" type="text" style="z-index:99999;" vlaue="-100">
+        },
+        how: {
+            fill: <input id='_fill' type="color" style="z-index:99999;"> ,
+            stroke: <input id="_stroke" type="number" value="255">,
+            strokeWeight: <input id="_weight" type="number" value="10">
+        }
+    },
+     
+];
+</pre>
+</div> -->
 
-<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 
-<footer class="footer">
+<!-- <footer class="footer">
   <div class="container">
       <div class="columns">
           <div class="column is-narrow has-text-centered">
@@ -343,57 +429,8 @@
           </div>
       </div>
   </div>
-</footer>
-<script>
-    const toolbox = {
-      "kind": "flyoutToolbox",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "controls_if"
-        },
-        {
-          "kind" : "block",
-          "type" : "logic_compare"
-        },
-        {
-          "kind": "block",
-          "type": "controls_repeat_ext"
-        },
-        {
-          "kind": "block",
-          "type": "math_number",
-          "fields": {
-            "NUM": 123
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_arithmetic"
-        },
-        {
-          "kind": "block",
-          "type": "text"
-        },
-        {
-          "kind" : "block",
-          "type" : "text_print"
-        }
-      ]
-    };
+</footer> -->
 
-    var workspace = Blockly.inject('blocklyDiv',
-        {media: 'https://unpkg.com/blockly/media/',
-         toolbox: toolbox});
-    function updateCode(event){
-    var code = Blockly.JavaScript.workspaceToCode(workspace);
-    // var codeHolder = document.getElementById('editor');
-    // codeHolder.innerHTML = '';  // Delete old code.
-    // codeHolder.appendChild(document.createTextNode(code));
-    editor.setValue(code);
-    }
-    workspace.addChangeListener(updateCode);
-  </script>
 <script src="topnav_handler.js"></script>
 <script src="lib/bulma-quickview.min.js"></script>
 
@@ -412,5 +449,6 @@
 <script src="setup_script.js"></script>
 <script src="overlays.js"></script>
 <script src="sketch.js"></script>
+
 </body>
 </html>

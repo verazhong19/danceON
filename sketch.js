@@ -121,6 +121,8 @@ function setup() {
     video.onended((elt) => stopRecording(elt, options));
     tmClassifier.onComplete(() => toggleAnalyzingNotifier(false)); // Callback
 
+    options.webcam = true;
+    handleWebCamToggle();
     // Toggle between Webcam and Video
     select(`#${options.videoToggle}`).mouseClicked(() => {
         if (!options.webcam) return;
@@ -288,8 +290,71 @@ function setup() {
 }
 
 function draw() {
+
     background(245);
     strokeWeight(1); // set unless it gets overridden (happened once?)
+    var triangle = "triangle";
+    var x1 = document.getElementById('x1').value;
+    var _x1 = document.getElementById('_x1').value;
+    var x2 = document.getElementById('x2').value;
+    var _x2 = document.getElementById('_x2').value;
+    var x3 = document.getElementById('x3').value;
+    var _x3 = document.getElementById('_x3').value;
+    var y1 = document.getElementById('y1').value;
+    var _y1 = document.getElementById('_y1').value;
+    var y2 = document.getElementById('y2').value;
+    var _y2 = document.getElementById('_y2').value;
+    var y3 = document.getElementById('y3').value;
+    var _y3 = document.getElementById('_y3').value;
+    var _stroke = document.getElementById('stroke').value;
+    var __stroke = document.getElementById('_stroke').value;
+    var weight = document.getElementById('weight').value;
+    var _weight = document.getElementById('_weight').value;
+
+
+
+    var colorProp = document.getElementById('fill').value;
+    var _colorProp = document.getElementById('_fill').value;
+    var colorRGB = hexToRgb(colorProp);
+    var _colorRGB = hexToRgb(_colorProp);
+ 
+    var properties = `(pose) => [
+        {
+                what: '${triangle}',
+                when: true,
+                where: {
+                    x1: pose.leftShoulder.x${x1},
+                    y1: pose.leftShoulder.y${y1},
+                    x2: pose.leftElbow.x${x2},
+                    y2: pose.leftElbow.y${y2},
+                    x3: pose.leftWrist.x${x3},
+                    y3: pose.leftEar.y${y3}
+                },
+                how: {
+                    fill: color(${colorRGB.r},${colorRGB.g},${colorRGB.b}),
+                    stroke: ${_stroke},
+                    strokeWeight: ${weight}
+                }
+            },{
+                what: 'triangle',
+                when: true,
+                where: {
+                    x1: pose.rightShoulder.x${_x1},
+                    y1: pose.rightShoulder.y${_y1},
+                    x2: pose.rightElbow.x${_x2},
+                    y2: pose.rightElbow.y${_y2},
+                    x3: pose.rightWrist.x${_x3},
+                    y3: pose.rightEar.y${_y3}
+                },
+                how: {
+                    fill: color(${_colorRGB.r}, ${_colorRGB.g}, ${_colorRGB.b}),
+                    stroke: ${__stroke},
+                    strokeWeight: ${_weight}
+                }
+            },
+             
+        ];`
+    editor.setValue(properties);
 
     // Things still loading - don't try to draw or calculate anything
     if (!tmClassifier.loaded) {
@@ -378,7 +443,7 @@ function keyPressed() {
     if (keyCode == UP_ARROW) goForwardOrBackward(options, video, 10);
     if (keyCode == DOWN_ARROW) goForwardOrBackward(options, video, -10);
 
-    return false;
+   
 }
 
 
@@ -493,6 +558,20 @@ function stopRecording(elt, options) {
 function changeFrame(frameNum) {
     video.time(getTimeFromFrame(frameNum, options.videoFramerate));
 }
+
+function hexToRgb(hex) {
+    // Remove the '#' character if it exists
+    hex = hex.replace('#', '');
+    
+    // Convert the hex string to three separate values for red, green, and blue
+    var r = parseInt(hex.substring(0, 2), 16).toString();
+    var g = parseInt(hex.substring(2, 4), 16).toString();
+    var b = parseInt(hex.substring(4, 6), 16).toString();
+  
+    // Return the RGB values as an object
+    return { r: r, g: g, b: b };
+  }
+  
 
 // Secret
 let danceON = {

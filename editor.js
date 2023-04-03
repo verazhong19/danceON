@@ -4,7 +4,7 @@ let editor = ace.edit("editor", {
     fontSize: 16,
     fontFamily: "Space Mono",
     theme: "ace/theme/willie_custom",
-    enableLiveAutocompletion: true
+    //enableLiveAutocompletion: true
 });
 
 // store pose parts for autocompletion
@@ -132,16 +132,17 @@ editor.commands.addCommand({
 // This variable helps us keep track of when it is us or the user behind changes
 let fromSetValueCall = false;
 
-const STARTING_CODE = `(pose) => [
-
-];`
+const STARTING_CODE = ``
 
 let declarations = new ace.EditSession(STARTING_CODE);
 declarations.setUndoManager(new ace.UndoManager());
 declarations.setUseWorker(false); // default jshint not great
 
+
 declarations.setMode("ace/mode/javascript");
 editor.setSession(declarations);
+
+
 
 function parseAndShowErrors(currentCode) {
     // If we can't use webworkers - then we'll have to do the parsing
